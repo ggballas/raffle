@@ -1,0 +1,17 @@
+{
+  "name": "hardhat-project",
+  "scripts": {
+    "compile": "yarn hardhat compile",
+    "deploy": "npx hardhat run --network goerli scripts/deploy.js",
+    "nodeFork": "npx hardhat node --network hardhat",
+    "test": "yarn hardhat test"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.4",
+    "hardhat": "^2.9.1"
+  }
+}
