@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Raffle is Ownable {
 
-    string public ipfsOptionsFile;
+    string public optionsFile;
     uint256 public numberOfOptions;
     uint256 public numberOfTimesOptionChosen;
 
