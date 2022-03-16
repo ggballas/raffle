@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -13,23 +13,23 @@ contract Raffle is Ownable {
     event OptionChosen(uint256 id, uint256 optionNumber);
 
     constructor(
-        string calldata _ipfsOptionsFile,
+        string memory _optionsFile,
         uint256 _numberOfOptions
     ) {
-        ipfsOptionsFile = _ipfsOptionsFile;
+        optionsFile = _optionsFile;
         numberOfOptions = _numberOfOptions;
-        numberOfTimesRandNumWasGenerated = 0;
+        numberOfTimesOptionChosen = 0;
     }
 
     /**
         Call this function to *randomly* choose a number in the range 0 to numberOfOptions.
      */
-    function chooseOption() public onlyOwner {
+    function chooseOption() public onlyOwner returns (uint256) {
         uint256 seed = uint256(keccak256(abi.encodePacked(
             block.timestamp + block.difficulty +
-            ((uint256(keccak256(abi.encodePacked(block.coinbase)))) / (now)) +
+            ((uint256(keccak256(abi.encodePacked(block.coinbase)))) / (block.timestamp)) +
             block.gaslimit + 
-            ((uint256(keccak256(abi.encodePacked(msg.sender)))) / (now)) +
+            ((uint256(keccak256(abi.encodePacked(msg.sender)))) / (block.timestamp)) +
             block.number
         )));
 
@@ -40,20 +40,5 @@ contract Raffle is Ownable {
         numberOfTimesOptionChosen += 1;
 
         return chosenOption;
-    }
-
-    /**
-     * Generate a random number between 0-999.
-     */
-    function rand() private view returns(uint256) {
-        uint256 seed = uint256(keccak256(abi.encodePacked(
-            block.timestamp + block.difficulty +
-            ((uint256(keccak256(abi.encodePacked(block.coinbase)))) / (now)) +
-            block.gaslimit + 
-            ((uint256(keccak256(abi.encodePacked(msg.sender)))) / (now)) +
-            block.number
-        )));
-
-        return (seed - ((seed / 1000) * 1000));
     }
 }
